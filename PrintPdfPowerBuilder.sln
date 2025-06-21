@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35931.197 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrintPdfPowerBuilder", "PrintPdfPowerBuilder\PrintPdfPowerBuilder.csproj", "{2ABFD30C-3B0B-458E-B26A-7CBE131C7C57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrintPdfPwerBuilderTest", "PrintPdfPwerBuilderTest\PrintPdfPwerBuilderTest.csproj", "{BC037B8F-A281-4EA5-970E-0DA436957EE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrintPdfPowerBuilderTest", "PrintPdfPwerBuilderTest\PrintPdfPowerBuilderTest.csproj", "{BC037B8F-A281-4EA5-970E-0DA436957EE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
