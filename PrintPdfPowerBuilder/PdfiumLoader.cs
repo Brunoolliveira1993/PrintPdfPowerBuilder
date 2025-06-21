@@ -11,7 +11,10 @@ namespace PrintPdfPowerBuilder
 
         public static void Load()
         {
-            string path = @"C:\Curso C#\PowerBuilder\pdfium.dll";
+            
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            string projectDir = Directory.GetParent(baseDir).Parent.Parent.FullName;
+            string path = Path.Combine(projectDir, @"pdfium\x64\pdfium.dll");
             IntPtr handle = LoadLibrary(path);
             if (handle == IntPtr.Zero)
             {

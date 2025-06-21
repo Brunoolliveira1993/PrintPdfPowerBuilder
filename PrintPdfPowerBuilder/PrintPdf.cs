@@ -22,7 +22,6 @@ namespace PrintPdfPowerBuilder
 
                 PdfiumLoader.Load();
 
-                // Changed 'using var' to explicit 'using' block for compatibility with C# 7.3  
                 using (var doc = PdfDocument.Load(caminhoPdf))
                 {
                     using (var printDoc = doc.CreatePrintDocument())
