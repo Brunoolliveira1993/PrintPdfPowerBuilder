@@ -14,7 +14,7 @@ namespace PrintPdfPowerBuilder
             
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
             string projectDir = Directory.GetParent(baseDir).Parent.Parent.FullName;
-            string path = Path.Combine(projectDir, @"pdfium\x64\pdfium.dll");
+            string path = Path.Combine(projectDir, @"PrintPdfPowerBuilder\pdfium\pdfium.dll");
             IntPtr handle = LoadLibrary(path);
             if (handle == IntPtr.Zero)
             {
