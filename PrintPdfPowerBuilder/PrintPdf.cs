@@ -1,50 +1,72 @@
-﻿
-using System.Runtime.InteropServices;
+﻿using System;
 using System.Drawing.Printing;
-using PdfiumViewer;
 using System.IO;
-using System;
+using PdfiumViewer;
 
 namespace PrintPdfPowerBuilder
 {
-
-    [ComVisible(true)]
-    [Guid("A1112223-B444-5678-C999-123456789ABC")]
-    [ClassInterface(ClassInterfaceType.None)]
-    public class PrintPdf : IPrintPdf
+    public class PrintPdf
     {
-        public int Print(string caminhoPdf)
+        public string Print(string pathPdf, string printerName, short numberCopies)
         {
             try
             {
-                if (!File.Exists(caminhoPdf))
-                    return 0;
 
-                PdfiumLoader.Load();
+                string path = pathPdf.Trim();
 
-                using (var doc = PdfDocument.Load(caminhoPdf))
+                if (string.IsNullOrEmpty(path))
                 {
-                    using (var printDoc = doc.CreatePrintDocument())
-                    {
-                        printDoc.PrintController = new StandardPrintController(); // silencioso  
-                        printDoc.PrinterSettings = new PrinterSettings(); // usa a padrão  
-                        printDoc.Print();
-                    }
+                    return $"{PdfEnumResult.PdfPathNotFound} : {path}";
                 }
 
-                return 1;
+                if (!File.Exists(path))
+                {
+                    return $"{PdfEnumResult.PdfFileNotFound} : {path}";
+                }
+
+                String loadPdfium = PdfiumLoader.Load();
+
+                if (!loadPdfium.Equals(PdfEnumResult.Success.ToString()))
+                {
+                    return loadPdfium;
+                }
+
+                using (var doc = PdfDocument.Load(path))
+
+                using (var printDoc = doc.CreatePrintDocument())
+                {
+                    printDoc.PrintController = new StandardPrintController();
+                    printDoc.PrinterSettings = new PrinterSettings
+                    {
+
+                        PrinterName = string.IsNullOrEmpty(printerName) ? new PrinterSettings().PrinterName : printerName,
+                        Copies = numberCopies == 0 ? (short)1 : numberCopies,
+
+                    };
+                    printDoc.Print();
+                }
+
+                return PdfEnumResult.Success.ToString();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                throw new ApplicationException("Ocorreu um erro ao executar a impressao. Detalhes: " + ex.Message, ex);
+                return $"{PdfEnumResult.Error} : {ex}";
             }
         }
-    }
 
-    [ComVisible(true)]
-    [Guid("C9876543-1234-4321-ABCD-76543210FEDC")]
-    public interface IPrintPdf
-    {
-        int Print(string caminhoPdf);
+        public string Print(string pathPdf, string printerName)
+        {
+            return Print(pathPdf, printerName, 1);
+        }
+
+        public string Print(string pathPdf, short numberCopies)
+        {
+            return Print(pathPdf, string.Empty, numberCopies);
+        }
+
+        public string Print(string pathPdf)
+        {
+            return Print(pathPdf, string.Empty, 1);
+        }
     }
 }

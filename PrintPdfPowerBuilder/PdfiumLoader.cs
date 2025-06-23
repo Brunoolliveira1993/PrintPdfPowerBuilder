@@ -1,25 +1,49 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+
+
 
 namespace PrintPdfPowerBuilder
 {
     public static class PdfiumLoader
     {
-        [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Unicode)]
-        private static extern IntPtr LoadLibrary(string lpFileName);
+        [DllImport("kernel32.dll", SetLastError = true)]
+        //private static extern IntPtr LoadLibrary(string lpFileName);
+        static extern bool SetDllDirectory(string lpPathName);
 
-        public static void Load()
+        public static string Load()
         {
-            
-            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            string projectDir = Directory.GetParent(baseDir).Parent.Parent.FullName;
-            string path = Path.Combine(projectDir, @"PrintPdfPowerBuilder\pdfium\pdfium.dll");
-            IntPtr handle = LoadLibrary(path);
-            if (handle == IntPtr.Zero)
+            String pathDll = GetDirectoryDll();
+
+            if (!Directory.Exists(pathDll))
             {
-                throw new Exception($"Não foi possível carregar a DLL: {path}");
+                return PdfEnumResult.DirectoryNotFound.ToString() + " : " + pathDll; 
+
+                
             }
+
+            Boolean dllDirectorySet = SetDllDirectory(pathDll);
+
+            if (!dllDirectorySet)
+            {
+                return PdfEnumResult.DirectorySetError.ToString() + " : " + pathDll;
+            }
+
+            return PdfEnumResult.Success.ToString();
+        }
+
+        private static string GetDirectoryDll()
+        {
+            Boolean is64Bits = Environment.Is64BitProcess;
+
+            string diretorioDll = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+            string arquitetura = is64Bits ? "X64" : "X86";
+
+            return Path.Combine(diretorioDll, "pdfium", arquitetura);
+          
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PrintPdfPowerBuilder;
 
 namespace PrintPdfPwerBuilderTest
 {
@@ -12,11 +13,11 @@ namespace PrintPdfPwerBuilderTest
 
             // Arrange
             var printPdf = new PrintPdfPowerBuilder.PrintPdf();
-            string caminhoPdf = @"C:\Curso C#\PowerBuilder\Boleto.pdf"; // Certifique-se de que o caminho do PDF é válido
+            string caminhoPdf = @"C:\Test\Boleto.pdf"; // Caminho do PDF
             // Act
-            int resultado = printPdf.Print(caminhoPdf);
+            string resultado = printPdf.Print(caminhoPdf, 2);
             // Assert
-            Assert.AreEqual(1, resultado, "A impressão do PDF falhou ou o arquivo não foi encontrado.");
+            Assert.AreEqual(PdfEnumResult.Success.ToString(), resultado, "A impressão do PDF falhou ou o arquivo não foi encontrado.");
         }
     }
 }
